@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lybxxx.pojo">
+    <resultMap id="productBean" type="Product">
+        <id column="pid" property="id" />
+        <result column="pname" property="name"/>
+        <result column="price" property="price"/>
+        <association property="category" javaType="Category">
+            <id column="cid" property="id"/>
+            <result column="cname" property="name"/>
+        </association>
+    </resultMap>
+
+    <select id="listProducts" resultMap="productBean">
+            select c.*, p.*, c.id 'cid', p.id 'pid', c.name 'cname',
+            p.name 'pname' from category c left join product p on c.id = p.cid
+    </select>
+
+    <select id="listProduct" resultType="Product">
+
+        select * from product
+        <if test="name!=null">
+            where name like concat('%',#{name},'%')
+        </if>
+    </select>
+
+    <select id="listProductByNameOrPrice" resultType="Product">
+        select * from product
+        <where>
+            <if test="name!=null">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="price!=null and price!=0">
+                and price>#{price}
+            </if>
+        </where>
+    </select>
+    <update id="updateProduct" parameterType="Product">
+        update product
+        <set>
+            <if test="name!=null">name=#{name}</if>
+            <if test="price!=null">price=#{price}</if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

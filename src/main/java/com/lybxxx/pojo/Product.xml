@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lybxxx.pojo">
+    <select id="listProduct" resultType="com.lybxxx.pojo.Product">
+            select * from   PRODUCT
+    </select>
+    <insert id="addProduct" parameterType="com.lybxxx.pojo.Product">
+        insert into porduct ( name ) values (#{name})
+    </insert>
+    <delete id="deleteProduct" parameterType="com.lybxxx.pojo.Product">
+        delete from product where id = #{id}
+    </delete>
+    <select id="getProduct" parameterType="_int" resultType="com.lybxxx.pojo.Product">
+        select * from product where id = #{id}
+    </select>
+
+</mapper>

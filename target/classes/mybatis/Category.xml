@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lybxxx.pojo">
+    <resultMap id="categoryBean" type="Category">
+        <id column="cid" property="id"/>
+        <result column="cname" property="name"/>
+        <collection property="productList" ofType="Product">
+            <id column="pid" property="id"/>
+            <result column="pname" property="name"/>
+            <result column="price" property="price"/>
+        </collection>
+    </resultMap>
+    <select id="listCategories" resultMap="categoryBean">
+        select c.*, p.*, c.id 'cid', p.id 'pid', c.name 'cname',
+        p.name 'pname' from category c left join product p on c.id = p.cid
+    </select>
+
+    <select id="listCategoriesByPage" resultType="Category">
+        select * from category
+        <if test="start!=null and count!=null">
+            limit #{start},#{count}
+        </if>
+    </select>
+</mapper>
